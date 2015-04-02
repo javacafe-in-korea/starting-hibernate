@@ -6,7 +6,6 @@ public class Message {
 	private Message nextMessage;
 
 	Message() {
-
 	}
 
 	public Message(final String text) {
