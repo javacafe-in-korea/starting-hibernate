@@ -9,3 +9,5 @@
 ## 참고자료
 * Hibernate ORM : http://docs.jboss.org/hibernate/orm/4.3/manual/en-US/html/
 * 도메인 주도 설계 : http://www.yes24.com/24/goods/5312881?scode=032&OzSrank=1
+
+## 곽대기 천재 ^^
