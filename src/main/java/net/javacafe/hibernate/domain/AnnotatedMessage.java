@@ -11,7 +11,13 @@ import org.hibernate.annotations.GenericGenerator;
 @Entity
 @Table(name = "MESSAGES")
 public class AnnotatedMessage {
+	@Id
+	@GeneratedValue(generator = "increment")
+	@GenericGenerator(name = "increment", strategy = "increment")
+	@Column(name = "MESSAGE_ID")
 	private Long id;
+
+	@Column(name = "MESSAGE_TEXT")
 	private String text;
 
 	public AnnotatedMessage() {
@@ -21,15 +27,10 @@ public class AnnotatedMessage {
 		this.text = text;
 	}
 
-	@Id
-	@GeneratedValue(generator = "increment")
-	@GenericGenerator(name = "increment", strategy = "increment")
-	@Column(name = "MESSAGE_ID")
 	public Long getId() {
 		return id;
 	}
 
-	@Column(name = "MESSAGE_TEXT")
 	public String getText() {
 		return this.text;
 	}
