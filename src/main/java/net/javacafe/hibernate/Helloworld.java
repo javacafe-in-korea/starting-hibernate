@@ -27,7 +27,7 @@ public class Helloworld {
 		/*
 		 * JPA 
 		 */
-		/*
+		
 		// EntityManagerFactory 시작
 		EntityManagerFactory emf = Persistence.createEntityManagerFactory("helloworld");
 		
@@ -41,7 +41,7 @@ public class Helloworld {
 		
 		tx.commit();
 		em.close();
-		*/
+		
 		// 두 번째 작업 단위
 		
 		/*
