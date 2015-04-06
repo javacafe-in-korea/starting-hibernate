@@ -13,21 +13,9 @@ import org.hibernate.cfg.AnnotationConfiguration;
 import org.hibernate.cfg.Configuration;
 
 public class Helloworld {
-	/*
-	private static SessionFactory sessionFactory = new Configuration()
-			.configure().buildSessionFactory();
 
-	private static SessionFactory annotatedSessionFactory = new AnnotationConfiguration()
-			.addPackage("net.javacafe.hibernate.domain")
-			.addAnnotatedClass(AnnotatedMessage.class).configure()
-			.buildSessionFactory();
-			*/
-
+	//JPA
 	public static void main(String[] args) {
-		/*
-		 * JPA 
-		 */
-		
 		// EntityManagerFactory 시작
 		EntityManagerFactory emf = Persistence.createEntityManagerFactory("helloworld");
 		
@@ -43,9 +31,18 @@ public class Helloworld {
 		em.close();
 		
 		// 두 번째 작업 단위
-		
-		/*
-		 * Hibernate
+	}
+	
+	/*
+	private static SessionFactory sessionFactory = new Configuration()
+	.configure().buildSessionFactory();
+
+	private static SessionFactory annotatedSessionFactory = new AnnotationConfiguration()
+	.addPackage("net.javacafe.hibernate.domain")
+	.addAnnotatedClass(AnnotatedMessage.class).configure()
+	.buildSessionFactory();
+	public static void main(String[] args) {
+		//Annotation 방식
 		Session session = sessionFactory.openSession();
 		Transaction tx = session.beginTransaction();
 
@@ -80,6 +77,6 @@ public class Helloworld {
 		newSession.close();
 
 		sessionFactory.close();
-		*/
 	}
+	*/
 }
