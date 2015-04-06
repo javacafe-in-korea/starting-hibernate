@@ -30,13 +30,23 @@
 
 <hibernate-mapping package="net.javacafe.hibernate.domain">
 
-	<class name="Message" table="MESSAGES">
-		<id name="id" column="MESSAGE_ID">
+	<class 
+	    name="Message" 
+	    table="MESSAGES">
+	    
+		<id name="id" 
+		    column="MESSAGE_ID">
 			<generator class="increment" />
 		</id>
-		<property name="text" column="MESSAGE_TEXT" />
+		
+		<property 
+		    name="text" 
+		    column="MESSAGE_TEXT" />
 
-		<many-to-one name="nextMessage" cascade="all" column="NEXT_MESSAGE_ID"
+		<many-to-one 
+		    name="nextMessage" 
+		    cascade="all" 
+		    column="NEXT_MESSAGE_ID"
 			foreign-key="FK_NEXT_MESSAGE" />
 	</class>
 	
