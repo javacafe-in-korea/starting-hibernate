@@ -1,8 +1,14 @@
 package net.javacafe.hibernate.domain;
 
+import java.util.HashSet;
+import java.util.Set;
+
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 
 @Entity
 public class Category {
@@ -10,6 +16,11 @@ public class Category {
 	@GeneratedValue
 	private Long id;
 	private String name;
+	@ManyToOne
+	@JoinColumn(name = "parentCategory_id")
+	private Category parentCategory;
+	@OneToMany(mappedBy="parentCategory")
+	private Set<Category> childCategories = new HashSet<Category>();
 	
 	public String getName() {
 		return name;
@@ -27,40 +38,34 @@ public class Category {
 		this.id = id;
 	}
 
-	@Override
-	public int hashCode() {
-		final int prime = 31;
-		int result = 1;
-		result = prime * result + ((id == null) ? 0 : id.hashCode());
-		result = prime * result + ((name == null) ? 0 : name.hashCode());
-		return result;
+	public Category getParentCategory() {
+		return parentCategory;
 	}
 
-	@Override
-	public boolean equals(Object obj) {
-		if (this == obj)
-			return true;
-		if (obj == null)
-			return false;
-		if (getClass() != obj.getClass())
-			return false;
-		Category other = (Category) obj;
-		if (id == null) {
-			if (other.id != null)
-				return false;
-		} else if (!id.equals(other.id))
-			return false;
-		if (name == null) {
-			if (other.name != null)
-				return false;
-		} else if (!name.equals(other.name))
-			return false;
-		return true;
+	public void setParentCategory(Category parentCategory) {
+		this.parentCategory = parentCategory;
 	}
 
-	@Override
-	public String toString() {
-		return "Category [id=" + id + ", name=" + name + "]";
+	public Set<Category> getChildCategories() {
+		return java.util.Collections.unmodifiableSet(childCategories);
 	}
 
+	public void setChildCategories(Set<Category> childCategories) {
+		this.childCategories = childCategories;
+	}
+
+	public void addChildCategory(Category category) {
+		if( category == null ) {
+			throw new IllegalArgumentException("Null category");
+		}
+		
+		if( category.getParentCategory() != null) {
+			category.getParentCategory().getChildCategories().remove(category);
+		}
+		
+		category.setParentCategory(this);
+		childCategories.add(category);
+	}
+	
+	
 }

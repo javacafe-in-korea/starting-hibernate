@@ -32,7 +32,7 @@ public class CategoryCRUD {
 	}
 	
 	@Test
-	public void 메시지삽입() {
+	public void 카테고리생성() {
 		entityTransaction.begin();
 		Category category = new Category();
 		category.setName("sports");
@@ -43,6 +43,33 @@ public class CategoryCRUD {
 		Category queriedCategory = entityManager.find(Category.class, category.getId());
 		
 		assertThat(queriedCategory, equalTo(category));
+	}
+	
+	@Test
+	public void 계층형카테고리생성() {
+		entityTransaction.begin();
+
+		// parent category 생성
+		Category parentCategory = new Category();
+		parentCategory.setName("sports");
+		entityManager.persist(parentCategory);
+
+		// child category 생성
+		Category childCategory = new Category();
+		childCategory.setName("baseball");
+
+		// child parent 관계 설정
+		parentCategory.addChildCategory(childCategory);
+		// 아래 코드로 실행하면 예외 발생!! Good :)
+//		childCategory.setParentCategory(parentCategory);
+//		parentCategory.getChildCategories().add(childCategory);
+		entityManager.persist(childCategory);
+		
+		entityTransaction.commit();
+		
+		// 검증
+		Category queriedCategory = entityManager.find(Category.class, childCategory.getId());
+		assertThat(queriedCategory.getParentCategory(), equalTo(parentCategory));
 	}
 	
 	@After
