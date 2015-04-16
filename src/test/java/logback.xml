@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+	<appender name="ROOT" class="ch.qos.logback.core.ConsoleAppender">
+		<encoder>
+			<pattern>%d{yyyyMMdd HH:mm:ss} [%-5p] %C{1}.%M:%L | %m%n</pattern>
+		</encoder>
+	</appender>
+	<logger name="xx.yy.zz" level="DEBUG" />
+	<root level="INFO">
+		<appender-ref ref="ROOT" />
+	</root>
+</configuration>
