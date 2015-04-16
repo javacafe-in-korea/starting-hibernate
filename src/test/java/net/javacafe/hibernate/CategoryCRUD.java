@@ -2,6 +2,7 @@ package net.javacafe.hibernate;
 
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.junit.Assert.assertThat;
+import static org.junit.Assert.assertTrue;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
@@ -15,7 +16,6 @@ import org.junit.Before;
 import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
 
 public class CategoryCRUD {
 	private static Logger logger = LoggerFactory.getLogger(CategoryCRUD.class);
@@ -34,8 +34,7 @@ public class CategoryCRUD {
 	@Test
 	public void 카테고리생성() {
 		entityTransaction.begin();
-		Category category = new Category();
-		category.setName("sports");
+		Category category = new Category("sports");
 		entityManager.persist(category);
 		entityTransaction.commit();
 		
@@ -50,13 +49,11 @@ public class CategoryCRUD {
 		entityTransaction.begin();
 
 		// parent category 생성
-		Category parentCategory = new Category();
-		parentCategory.setName("sports");
+		Category parentCategory = new Category("sports");
 		entityManager.persist(parentCategory);
 
 		// child category 생성
-		Category childCategory = new Category();
-		childCategory.setName("baseball");
+		Category childCategory = new Category("baseball");
 
 		// child parent 관계 설정
 		parentCategory.addChildCategory(childCategory);
@@ -77,21 +74,18 @@ public class CategoryCRUD {
 		entityTransaction.begin();
 
 		// parent category 생성
-		Category parentCategoryForOrigin = new Category();
-		parentCategoryForOrigin.setName("sports");
+		Category parentCategoryForOrigin = new Category("sports");
 		entityManager.persist(parentCategoryForOrigin);
 
 		// child category 생성
-		Category childCategory = new Category();
-		childCategory.setName("baseball");
+		Category childCategory = new Category("baseball");
 
 		// child parent 관계 설정
 		parentCategoryForOrigin.addChildCategory(childCategory);
 		entityManager.persist(childCategory);
 
 		// 새로운 parent category 생성
-		Category parentCategoryForNew = new Category();
-		parentCategoryForNew.setName("sports2");
+		Category parentCategoryForNew = new Category("sports2");
 		entityManager.persist(parentCategoryForNew);
 
 		// child parent 관계 설정
@@ -100,8 +94,12 @@ public class CategoryCRUD {
 		entityTransaction.commit();
 		
 		// 검증
-		Category queriedCategory = entityManager.find(Category.class, childCategory.getId());
-		assertThat(queriedCategory.getParentCategory(), equalTo(parentCategoryForNew));
+		Category queriedChildCategory = entityManager.find(Category.class, childCategory.getId());
+		assertThat(queriedChildCategory.getParentCategory(), equalTo(parentCategoryForNew));
+		
+		// 검증
+		Category queriedParentCategory = entityManager.find(Category.class, parentCategoryForNew.getId());
+		assertTrue(queriedParentCategory.hasChildFor(childCategory));
 	}
 	
 	@After

@@ -1,5 +1,6 @@
 package net.javacafe.hibernate.domain;
 
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -21,6 +22,13 @@ public class Category {
 	private Category parentCategory;
 	@OneToMany(mappedBy="parentCategory")
 	private Set<Category> childCategories = new HashSet<Category>();
+	
+	public Category() {
+	}
+	
+	public Category( String name ) {
+		this.name = name;
+	}
 	
 	public String getName() {
 		return name;
@@ -47,11 +55,7 @@ public class Category {
 	}
 
 	public Set<Category> getChildCategories() {
-		return java.util.Collections.unmodifiableSet(childCategories);
-	}
-
-	public void setChildCategories(Set<Category> childCategories) {
-		this.childCategories = childCategories;
+		return Collections.unmodifiableSet(childCategories);
 	}
 
 	public void addChildCategory(Category category) {
@@ -71,4 +75,9 @@ public class Category {
 		childCategories.remove(category);
 	}
 
+	public boolean hasChildFor(Category childCategory) {
+		return childCategories.contains(childCategory);
+	}
+
+	
 }
