@@ -72,6 +72,38 @@ public class CategoryCRUD {
 		assertThat(queriedCategory.getParentCategory(), equalTo(parentCategory));
 	}
 	
+	@Test
+	public void 부모카테고리변경() {
+		entityTransaction.begin();
+
+		// parent category 생성
+		Category parentCategoryForOrigin = new Category();
+		parentCategoryForOrigin.setName("sports");
+		entityManager.persist(parentCategoryForOrigin);
+
+		// child category 생성
+		Category childCategory = new Category();
+		childCategory.setName("baseball");
+
+		// child parent 관계 설정
+		parentCategoryForOrigin.addChildCategory(childCategory);
+		entityManager.persist(childCategory);
+
+		// 새로운 parent category 생성
+		Category parentCategoryForNew = new Category();
+		parentCategoryForNew.setName("sports2");
+		entityManager.persist(parentCategoryForNew);
+
+		// child parent 관계 설정
+		parentCategoryForNew.addChildCategory(childCategory);
+		
+		entityTransaction.commit();
+		
+		// 검증
+		Category queriedCategory = entityManager.find(Category.class, childCategory.getId());
+		assertThat(queriedCategory.getParentCategory(), equalTo(parentCategoryForNew));
+	}
+	
 	@After
 	public void destroy() {
 		entityManagerFactory.close();

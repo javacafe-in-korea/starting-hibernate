@@ -60,12 +60,15 @@ public class Category {
 		}
 		
 		if( category.getParentCategory() != null) {
-			category.getParentCategory().getChildCategories().remove(category);
+			category.getParentCategory().removeChildCategory(category);
 		}
 		
 		category.setParentCategory(this);
 		childCategories.add(category);
 	}
 	
-	
+	public void removeChildCategory(Category category) {
+		childCategories.remove(category);
+	}
+
 }
