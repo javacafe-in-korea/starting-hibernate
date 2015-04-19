@@ -1,4 +1,4 @@
-package net.javacafe.hibernate.caveat;
+package net.javacafe.hibernate.model;
 
 import java.io.Serializable;
 import java.util.StringTokenizer;

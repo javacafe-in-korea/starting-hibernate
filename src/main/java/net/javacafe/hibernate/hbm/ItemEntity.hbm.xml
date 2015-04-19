@@ -28,21 +28,41 @@
         "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
         "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
 
-<hibernate-mapping package="net.javacafe.hibernate.model">
-
-	<class name="Category" table="CATEGORY">
-		<id 
-			name="id"
-			column="CATEGORY_ID"
-			type="long">
+<hibernate-mapping package="net.javacafe.hibernate.model.pojo">
+	
+	<class name="ItemPojo" entity-name="ItemEntity" table="ITEM_ENTITY">
+		<id name="id" type="long" column="ITEM_ID">
 			<generator class="native" />
-		</id>	
+		</id>
 		
-		<property 
-			name="name"
-			column="NAME"
-			type="string" />
-			
+		<property name="initialPrice" 
+				  type="big_decimal"
+				  column="INIT_PRICE" />
+	
+	    <property name="description" 
+				  type="string"
+				  column="DESCRIPTION" />
+				  
+		<many-to-one name="seller"
+					 entity-name="UserEntity"
+					 column="USER_ID" />
+	</class>
+	
+	<class name="UserPojo" entity-name="UserEntity" table="USER_ENTITY">
+	
+		<id name="id" type="long" column="USER_ID">
+			<generator class="native" />
+		</id>
+	    
+	    <property name="username"
+	    		  type="string"
+	    		  column="USERNAME" />
+	    		  
+	    <bag name="itemsForSale" inverse="true" cascade="all">
+	    	<key column="USER_ID" />
+	    	<one-to-many entity-name="ItemEntity" />
+	    </bag>
+	    
 	</class>
 	
 </hibernate-mapping>

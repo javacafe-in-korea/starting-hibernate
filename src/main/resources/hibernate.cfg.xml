@@ -29,7 +29,9 @@
 <hibernate-configuration>
 
     <session-factory>
-
+    	<!-- 전역적으로 엔티티 모드 변경  -->
+		<property name="default_entity_mode">dynamic-map</property>
+		
         <!-- Database connection settings -->
         <property name="connection.driver_class">org.h2.Driver</property>
         <property name="connection.url">jdbc:h2:mem:db1;DB_CLOSE_DELAY=-1;MVCC=TRUE</property>
@@ -53,7 +55,7 @@
         
         <mapping resource="net/javacafe/hibernate/hbm/Message.hbm.xml"/>
         <mapping resource="net/javacafe/hibernate/hbm/Category.hbm.xml"/>
-        
+        <mapping resource="net/javacafe/hibernate/hbm/ItemEntity.hbm.xml"/>
         
     </session-factory>
     

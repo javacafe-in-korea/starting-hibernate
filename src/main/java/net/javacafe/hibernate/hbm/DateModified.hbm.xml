@@ -30,18 +30,18 @@
 
 <hibernate-mapping package="net.javacafe.hibernate.model">
 
-	<class name="Category" table="CATEGORY">
+	<class name="DateModified" table="DATEMODIFIED">
 		<id 
 			name="id"
-			column="CATEGORY_ID"
+			column="DATEMODIFIED_ID"
 			type="long">
 			<generator class="native" />
 		</id>	
-		
 		<property 
-			name="name"
-			column="NAME"
-			type="string" />
+			name="dateModified"
+			column="DATE_MOD"
+			type="timestamp" />
+		
 			
 	</class>
 	

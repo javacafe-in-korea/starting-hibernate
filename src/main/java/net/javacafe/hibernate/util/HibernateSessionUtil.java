@@ -11,24 +11,29 @@ public class HibernateSessionUtil {
 	private static SessionFactory sessionFactory;
 	private static ServiceRegistry serviceRegistry;
 	
+	HibernateSessionUtil() {		
+	}
+	
 	static {
 		try{
+			
 			Configuration configuration = new Configuration();
 		    configuration.configure();
 		    serviceRegistry = new StandardServiceRegistryBuilder().applySettings(
 		            configuration.getProperties()).build();
 		    sessionFactory = configuration.buildSessionFactory(serviceRegistry);
+		  
 		} catch (Throwable ex) {
 			throw new ExceptionInInitializerError(ex);
 		}
 	}
-		
+	
 	public static SessionFactory getSessionFactory() {
 		return sessionFactory;
 	}
 	
 	public static void shutdown() {
-		getSessionFactory().close();
+		sessionFactory.close();
 	}
 		
 }
