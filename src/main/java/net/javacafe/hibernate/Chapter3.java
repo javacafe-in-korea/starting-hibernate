@@ -23,42 +23,48 @@ public class Chapter3 {
 		Session session = HibernateSessionUtil.getSessionFactory().openSession();
 		Transaction tx = session.beginTransaction();
 		
-		UserPojo user = new UserPojo();
-		user.setUsername("johndoe");
+		Map<String, Object> user = new HashMap<String, Object>();
+		user.put("username", "johndoe");
 		
-		ItemPojo item1 = new ItemPojo();
-		item1.setDescription("An item for auction");
-		item1.setInitialPrice(new BigDecimal(133));
-		item1.setSeller(user);
+		Map<String, Object> item1 = new HashMap<String, Object>();
+		item1.put("description", "An item for auction");
+		item1.put("initialPrice", new BigDecimal(99));
+		item1.put("seller", user);
 		
-		ItemPojo item2 = new ItemPojo();
-		item2.setDescription("Another item for auction");
-		item2.setInitialPrice(new BigDecimal(233));
-		item2.setSeller(user);
+		Map<String, Object> item2 = new HashMap<String, Object>();
+		item2.put("description", "Another item for auction");
+		item2.put("initialPrice", new BigDecimal(123));
+		item2.put("seller", user);
 		
-		Collection<ItemPojo> itemsForSale = new ArrayList<ItemPojo>();
+		Collection<Map<String, Object>> itemsForSale = new ArrayList<Map<String, Object>>();
 		itemsForSale.add(item1);
 		itemsForSale.add(item2);
-		user.setItemsForSale(itemsForSale);
+		user.put("itemsForSale", itemsForSale);
 		
 		session.save("UserEntity",user);
 		
-		tx.commit();	
-		
-		Long storedItemId = item1.getId();
-		ItemPojo loadItemPojo = (ItemPojo) session.load("ItemEntity", storedItemId);
-		
-		List queriedItemPojos = session.createQuery("from ItemEntity where initialPrice >= :p")
-									   .setParameter("p", new BigDecimal(100))
-									   .list();
-		
-		for (Object m : queriedItemPojos) {
-			ItemPojo loadedMsg = (ItemPojo) m;
-			System.out.println(loadedMsg.getSeller().getId());
-		}
-		
+		tx.commit();
 		session.close();
 		
+		Session newSession = HibernateSessionUtil.getSessionFactory().openSession();
+		Transaction newTransaction = newSession.beginTransaction();
+		
+		Long storedItemId = (Long) item1.get("id");
+		Map loadedItemMap = (Map) newSession.load("ItemEntity", storedItemId);
+		
+		List queriedItemPojos = session.createQuery("from ItemEntity where initialPrice >= :p")
+				   .setParameter("p", new BigDecimal(100))
+				   .list();
+
+		for (Object m : queriedItemPojos) {
+			Map<String, Object> loadedMsg = (Map<String, Object>) m;
+			UserPojo userPojo = (UserPojo) loadedMsg.get("seller");
+			System.out.println(userPojo.getId());
+		}
+
+		newTransaction.commit();
+		newSession.close();
+
 		HibernateSessionUtil.shutdown();
 	}
 }
