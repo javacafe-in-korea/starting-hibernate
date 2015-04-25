@@ -30,23 +30,30 @@
 
 <hibernate-mapping package="net.javacafe.hibernate.model">
 
-	<class name="Item" table="ITEM">
+	<class name="User" table="USERS">
 		<id 
 			name="id"
-			column="ITEM_ID"
+			column="USER_ID"
 			type="long">
 			<generator class="native" />
 		</id>	
 		
-		<property 
-			name="name"
-			column="NAME"
-			type="string" />
+		<property name="loginName" column="LOGIN" type="string" />
 		
-		<property 
-			name="dateModified"
-			column="DATE_MOD"
-			type="timestamp" />	
+		<component name="homeAddress" class="Address">
+			<!-- <parent name="user"/>  -->
+			<property name="street" type="string" column="HOME_STREET" not-null="true"/>
+			<property name="city" type="string" column="HOME_CITY" not-null="true"/>
+			<property name="zipcode" type="string" column="HOME_ZIPCODE" not-null="true"/>
+		</component>
+		
+		<component name="billingAddress" class="Address">
+			<property name="street" type="string" column="BILLING_STREET" not-null="true"/>
+			<property name="city" type="string" column="BILLING_CITY" not-null="true"/>
+			<property name="zipcode" type="string" column="BILLING_ZIPCODE" not-null="true"/>
+		</component>
+		
+		
 	</class>
 	
 </hibernate-mapping>

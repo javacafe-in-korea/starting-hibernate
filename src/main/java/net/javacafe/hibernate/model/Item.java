@@ -6,14 +6,22 @@ import java.util.Set;
 import javax.persistence.Entity;
 import javax.persistence.Table;
 
+import lombok.Data;
+
+import org.hibernate.annotations.DynamicInsert;
+import org.hibernate.annotations.DynamicUpdate;
+
 import com.sun.jmx.snmp.Timestamp;
 
-@Entity
+@Entity(name="AuctionItem")
 @Table(name="ITEM")
 @org.hibernate.annotations.BatchSize(size=10)
 @org.hibernate.annotations.DiscriminatorFormula(
 	"case when ITEM_IS_SPECIAL is not null then A else B end"
 )
+@DynamicInsert(value=true)
+@DynamicUpdate(value=true)
+@Data
 public class Item {
 	private Long id;
 	private String name;
@@ -22,38 +30,6 @@ public class Item {
 	
 	private Set<Category> categories = new HashSet<Category>();
 
-	public Long getId() {
-		return id;
-	}
-	
-	public void setId(Long id) {
-		this.id = id;
-	}
-	
-	public String getName() {
-		return name;
-	}
-
-	public void setName(String name) {
-		this.name = name;
-	}
-
-	public String getDescription() {
-		return description;
-	}
-
-	public void setDescription(String description) {
-		this.description = description;
-	}
-
-	public Set<Category> getCategories() {
-		return categories;
-	}
-
-	public void setCategories(Set<Category> categories) {
-		this.categories = categories;
-	}
-	
 	public void addCategory(Category category) {
 		if (category == null)
 			throw new IllegalArgumentException("Null category");
@@ -61,12 +37,4 @@ public class Item {
 		categories.add(category);
 	}
 
-	public Timestamp getDateModified() {
-		return dateModified;
-	}
-
-	public void setDateModified(Timestamp dateModified) {
-		this.dateModified = dateModified;
-	}
-	
 }

@@ -55,7 +55,9 @@
         
         <mapping resource="net/javacafe/hibernate/hbm/Message.hbm.xml"/>
         <mapping resource="net/javacafe/hibernate/hbm/Category.hbm.xml"/>
+        <mapping resource="net/javacafe/hibernate/hbm/Item.hbm.xml"/>
         <mapping resource="net/javacafe/hibernate/hbm/ItemEntity.hbm.xml"/>
+        <mapping resource="net/javacafe/hibernate/hbm/User.hbm.xml"/>
         
     </session-factory>
     

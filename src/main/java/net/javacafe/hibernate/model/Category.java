@@ -3,6 +3,15 @@ package net.javacafe.hibernate.model;
 import java.util.HashSet;
 import java.util.Set;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.Table;
+
+@Entity
+@Table(name="CATEGORY")
 public class Category {
 	private Long id;
 	private String name;
@@ -16,6 +25,9 @@ public class Category {
 		this.name = name;
 	}
 	
+	@Id
+	@GeneratedValue(strategy=GenerationType.AUTO)
+	@Column(name="CATEGORY_ID")
 	public Long getId() {
 		return id;
 	}

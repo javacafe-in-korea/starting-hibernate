@@ -3,8 +3,14 @@ package net.javacafe.hibernate.model;
 import java.io.Serializable;
 import java.util.StringTokenizer;
 
+import javax.persistence.Embedded;
+import javax.persistence.Table;
+
+import lombok.Data;
 import antlr.StringUtils;
 
+@Data
+@Table(name="USERS")
 public class User implements Serializable {
 
 	/**
@@ -12,21 +18,21 @@ public class User implements Serializable {
 	 */
 	private static final long serialVersionUID = 1L;
 	
+	private Long id;
+	private String loginName;
 	private String firstname;
 	private String lastname;
 	private String username;
 	private Address address;
 	
+	@Embedded
+	private Address homeAddress;
+	
+	@Embedded
+	private Address billingAddress;
+	
 	public User() {
 		
-	}
-	
-	public String getFirstname() {
-		return firstname;
-	}
-	public void setFirstname(String firstname) {
-		
-		this.firstname = firstname;
 	}
 	
 	public String getName() {
@@ -36,20 +42,6 @@ public class User implements Serializable {
 		StringTokenizer t = new StringTokenizer(name);
 		firstname = t.nextToken();
 		lastname = t.nextToken();
-	}
-	
-	public String getUsername() {
-		return username;
-	}
-	public void setUsername(String username) {
-		this.username = username;
-	}
-	
-	public Address getAddress() {
-		return address;
-	}
-	public void setAddress(Address address) {
-		this.address = address;
 	}
 	
 	public MonetaryAmount calcShippingCosts(Address fromLocation) {

@@ -9,7 +9,10 @@ import java.util.List;
 import java.util.Map;
 
 import net.javacafe.hibernate.domain.Message;
+import net.javacafe.hibernate.model.Address;
 import net.javacafe.hibernate.model.Category;
+import net.javacafe.hibernate.model.Item;
+import net.javacafe.hibernate.model.User;
 import net.javacafe.hibernate.model.pojo.ItemPojo;
 import net.javacafe.hibernate.model.pojo.UserPojo;
 import net.javacafe.hibernate.util.HibernateSessionUtil;
@@ -20,46 +23,51 @@ import org.hibernate.Transaction;
 public class Chapter3 {
 	
 	public static void main(String args[]) {
-		Session session = HibernateSessionUtil.getSessionFactory().openSession();
+		Session session = HibernateSessionUtil.getAnnotatedSessionFactory().openSession();
 		Transaction tx = session.beginTransaction();
+
+//		Category aPrent = new Category("parent1");
+//		Category aChild = new Category("child1");
+//		aChild.setParentCategory(aPrent);
+//		aPrent.getChildCategories().add(aChild);
+//		
+//		session.save(aPrent);
+//		session.save(aChild);
 		
-		Map<String, Object> user = new HashMap<String, Object>();
-		user.put("username", "johndoe");
+		User user = new User();
+		user.setLoginName("asdasd");
 		
-		Map<String, Object> item1 = new HashMap<String, Object>();
-		item1.put("description", "An item for auction");
-		item1.put("initialPrice", new BigDecimal(99));
-		item1.put("seller", user);
+		Address homeAddress = new Address();
+		homeAddress.setCity("city1");
+		homeAddress.setStreet("homeStreet");
+		homeAddress.setZipcode("1111");
 		
-		Map<String, Object> item2 = new HashMap<String, Object>();
-		item2.put("description", "Another item for auction");
-		item2.put("initialPrice", new BigDecimal(123));
-		item2.put("seller", user);
+		Address billingAddress = new Address();
+		billingAddress.setCity("city2");
+		billingAddress.setStreet("billingStreet");
+		billingAddress.setZipcode("2222");
 		
-		Collection<Map<String, Object>> itemsForSale = new ArrayList<Map<String, Object>>();
-		itemsForSale.add(item1);
-		itemsForSale.add(item2);
-		user.put("itemsForSale", itemsForSale);
+		user.setHomeAddress(homeAddress);
+		user.setBillingAddress(billingAddress);		
 		
-		session.save("UserEntity",user);
+		session.save(user);
 		
 		tx.commit();
 		session.close();
-		
+
 		Session newSession = HibernateSessionUtil.getSessionFactory().openSession();
 		Transaction newTransaction = newSession.beginTransaction();
-		
-		Long storedItemId = (Long) item1.get("id");
-		Map loadedItemMap = (Map) newSession.load("ItemEntity", storedItemId);
-		
-		List queriedItemPojos = session.createQuery("from ItemEntity where initialPrice >= :p")
-				   .setParameter("p", new BigDecimal(100))
-				   .list();
+		List<User> messages = newSession.createQuery(
+				"from User m").list();
 
-		for (Object m : queriedItemPojos) {
-			Map<String, Object> loadedMsg = (Map<String, Object>) m;
-			UserPojo userPojo = (UserPojo) loadedMsg.get("seller");
-			System.out.println(userPojo.getId());
+		System.out.println(messages.size() + " message(s) found:");
+
+		for (Object m : messages) {
+			User loadedMsg = (User) m;
+			System.out.println(loadedMsg.getHomeAddress());
+			System.out.println(loadedMsg.getBillingAddress());
+			
+			//System.out.println(loadedMsg.getAddress().getUser().getName());
 		}
 
 		newTransaction.commit();

@@ -16,12 +16,13 @@ import net.javacafe.hibernate.util.HibernateSessionUtil;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 import org.junit.Test;
+import static org.junit.Assert.*;
 
 public class Chapter3Test {
 	
 	// 일대다 Test Case
-	@Test
 	@Ignore
+	@Test
 	public void OneToManyTest() {
 		Session session = HibernateSessionUtil.getSessionFactory().openSession();
 		Transaction tx = session.beginTransaction();
@@ -56,6 +57,7 @@ public class Chapter3Test {
 	}
 	
 	// 다대다 Test
+	@Ignore
 	@Test
 	public void ManyToManyTest() {
 		
@@ -65,8 +67,8 @@ public class Chapter3Test {
 	}
 	
 	// 동적 엔티티 Test
-	@Test
 	@Ignore
+	@Test
 	public void DynamicEntityItemTest() {
 		
 		Session session = HibernateSessionUtil.getSessionFactory().openSession();
